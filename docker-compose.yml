@@ -1,37 +1,25 @@
 version: '2'
 services:
   web-server:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
+    container_name: web-server
     volumes:
       - ./src:/app/src
       - .env:/app/.env
     depends_on:
       - mongodb
-      - redis
-    scale: 3
+    ports:
+      - 3000:3000
   mongodb:
     build:
       context: .
       dockerfile: Dockerfile-mongo
-    container_name: mongodb
+    container_name: mongo
     ports:
       - "27017:27017"
     volumes:
-      - mongodbdata:/data/db
-  redis:
-    image: redis:7.2.5
-    container_name: cadt-redis
-    ports:
-      - 6379:6379
-  redis-commander:
-    image: rediscommander/redis-commander:latest
-    environment:
-      - REDIS_HOSTS=local:cadt-redis:6379
-    ports:
-      - "8081:8081"
-    depends_on:
-      - redis
+      - mongodb:/data/db
 volumes:
-  mongodbdata:
+  mongodb:

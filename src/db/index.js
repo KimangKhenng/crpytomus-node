@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const dbName = "cadt-db"
+const dbName = process.env.MONGO_HOST
 require('dotenv').config()
 const uri = `mongodb://${process.env.MONGO_HOST}:27017/${dbName}`
 
