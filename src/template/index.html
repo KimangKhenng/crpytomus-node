@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Commerce</title>
+  <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="app" class="p-8">
+    <h1 class="text-3xl font-bold mb-6">Happy Shop</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div v-for="product in products" :key="product.id" class="bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-xl text-blue-700 text-3xl font-semibold mb-2">{{ product.name }}</h2>
+        <p class="text-gray-700 mb-4">{{ product.description }}</p>
+        <p class="text-red-700 text-2xl font-bold mb-4 uppercase">{{ product.price }} - {{ product.currency }}</p>
+        <button @click="checkout(product)" class="bg-blue-500 text-white px-4 py-2 rounded">Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          products: []
+        };
+      },
+      async created() {
+        const { data } = await axios.get('/products')
+        this.products = data
+      },
+      methods: {
+        async checkout(product) {
+          try {
+            const { data } = await axios.post('/checkout',
+              {
+                price: product.price,
+                currency: product.currency
+              });
+          } catch (err) {
+            console.error('Error payment!:', err);
+          }
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+
+</html>
