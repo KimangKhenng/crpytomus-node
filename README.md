@@ -1,4 +1,4 @@
-# Boilerplate Express Server with Docker
+# Express Server with Docker + Cryptomus API Integration
 
 ## Overview
 
