@@ -13,7 +13,7 @@ async function generate() {
     for (let i = 0; i < numberProduct; i++) {
         const product = new ProductModel({
             name: faker.commerce.product(),
-            price: faker.number.int({ max: 5 }),
+            amount: faker.number.int({ max: 5 }),
             description: faker.commerce.productDescription(),
         })
         await product.save()
